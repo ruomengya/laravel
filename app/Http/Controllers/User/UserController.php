@@ -45,7 +45,7 @@ class UserController extends Controller
 
         $list = UserModel::all();
         $data = [
-            'a' =>$list
+            'aa' =>$list
         ];
        // print_r($list);
         return view( 'userlist' , $data);
