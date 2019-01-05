@@ -24,3 +24,11 @@ Route::any('/user/update/{id}','User\UserController@update');
 Route::any('/user/delete/{id}','User\UserController@delete');
 
 Route::any('/user/list','User\UserController@userList');
+
+Route::any('/register','User\UserController@register');
+
+Route::any('/login','User\UserController@login');
+
+Route::any('/center','User\UserController@center');
+
+Route::get('/mvc/bst','Mvc\MvcController@bst');
