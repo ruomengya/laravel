@@ -32,3 +32,18 @@ Route::any('/login','User\UserController@login');
 Route::any('/center','User\UserController@center');
 
 Route::get('/mvc/bst','Mvc\MvcController@bst');
+
+
+Route::get('/test/check_cookie','Test\TestController@checkCookie')->middleware('check.cookie');
+
+Route::get('/cart','Cart\IndexController@index')->middleware('check.login');  //中间件测试
+
+Route::any('/cartdel/{goods_id}','Cart\IndexController@cartDel');
+
+Route::any('/cartshow','Cart\IndexController@index');
+
+Route::any('/goodslist','Goods\GoodsController@goodsList');
+
+Route::any('/cartlist/{goods_id}','Goods\GoodsController@index');
+
+Route::any('/cartAdd','Cart\IndexController@cartAdd');

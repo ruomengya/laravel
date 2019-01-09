@@ -106,6 +106,11 @@ class UserController extends Controller
 
                     setcookie('token',$token,time()+86400);
 
+                    $request->session()->put('u_token',$token);
+
+                    $request->session()->put('uid',$uid->uid);
+
+
                     echo '登陆成功';
                 }else{
                     echo '密码错误';
@@ -132,3 +137,4 @@ class UserController extends Controller
         }
     }
 }
+

@@ -1,6 +1,8 @@
 @extends('layout.bst')
 
+@section('nav')
 
+@endsection
 @section('content')
     <h1 style="margin-left:500px;">用户登录</h1>
 
@@ -15,5 +17,5 @@
             <input type="password" class="form-control" name="u_pwd">
         </div>
         <button type="submit" class="btn btn-default">登录</button>
-   、 </form>
+    </form>
 @endsection
