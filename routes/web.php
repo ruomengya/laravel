@@ -47,3 +47,5 @@ Route::any('/goodslist','Goods\GoodsController@goodsList');
 Route::any('/cartlist/{goods_id}','Goods\GoodsController@index');
 
 Route::any('/cartAdd','Cart\IndexController@cartAdd');
+
+Route::any('/orderadd','Order\IndexController@orderAdd');

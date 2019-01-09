@@ -61,7 +61,11 @@ class IndexController extends Controller
                 ];
                 return $response;
             }else{
-                $goods_update = GoodsModel::where(['goods_id' => $goods_id])->update(['goods_num' =>$goods['goods_num'] - $num ]);
+                $data = [
+                    'goods_num' =>$goods['goods_num'] - $num ,
+                    'add_time' => time(),
+                ];
+                $goods_update = GoodsModel::where(['goods_id' => $goods_id])->update($data);
                 if($goods_update){
                     $response = [
                         'error' => 0,
@@ -75,7 +79,12 @@ class IndexController extends Controller
                     ];
                     return $response;
                 }
-                CartModel::where(['id' => $cart['id']])->update(['num' =>$cart['num'] + $num ]);
+                $data1 = [
+                    'num' =>$cart['num'] + $num,
+                    'add_time' => time(),
+                    'session_token' => session()->get('u_token')
+                ];
+                CartModel::where(['id' => $cart['id']])->update($data1);
                 return $response;
         }
         }else{
@@ -104,7 +113,11 @@ class IndexController extends Controller
                 'msg'   => '添加成功'
             ];
 
-            GoodsModel::where(['goods_id' => $goods_id])->update(['goods_num' =>$goods['goods_num'] - $num ]);
+            $data = [
+                'goods_num' =>$goods['goods_num'] - $num ,
+                'add_time' => time(),
+            ];
+            GoodsModel::where(['goods_id' => $goods_id])->update($data);
             return $response;
         }
     }

@@ -19,7 +19,8 @@
                 <td><a href="/cartdel/{{$v['goods_id']}}">删除</a></td>
             </tr>
         @endforeach
-
         </tbody>
+
     </table>
+    <a href="/orderadd" id="submit_order" class="btn btn-info "> 提交订单 </a>
 @endsection
