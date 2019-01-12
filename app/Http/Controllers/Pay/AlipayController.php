@@ -50,7 +50,7 @@ class AlipayController extends Controller
     public function rsaSign($params) {
         return $this->sign($this->getSignContent($params));
     }
-a
+
     protected function sign($data) {
 
         $priKey = file_get_contents($this->rsaPrivateKeyFilePath);
