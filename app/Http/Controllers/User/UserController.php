@@ -110,7 +110,7 @@ class UserController extends Controller
 
                     $request->session()->put('uid',$uid->uid);
 
-
+                    header('Refresh:2;url=goodslist');
                     echo '登陆成功';
                 }else{
                     echo '密码错误';
@@ -128,13 +128,8 @@ class UserController extends Controller
 
     public function center()
     {
-        if(empty($_COOKIE['uid'])){
-            header('Refresh:2;url=login');
-            echo '请先登录';
-            exit;
-        }else{
-            echo 'UID: '.$_COOKIE['uid'] . ' 欢迎回来';
-        }
+        $data = [];
+        return view('users.center',$data);
     }
 }
 

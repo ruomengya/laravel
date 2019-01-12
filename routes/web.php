@@ -38,14 +38,22 @@ Route::get('/test/check_cookie','Test\TestController@checkCookie')->middleware('
 
 Route::get('/cart','Cart\IndexController@index')->middleware('check.login');  //中间件测试
 
-Route::any('/cartdel/{goods_id}','Cart\IndexController@cartDel');
+Route::any('/cartdel/{goods_id}','Cart\IndexController@cartDel')->middleware('check.login');
 
-Route::any('/cartshow','Cart\IndexController@index');
+Route::any('/cartshow','Cart\IndexController@index')->middleware('check.login');
 
-Route::any('/goodslist','Goods\GoodsController@goodsList');
+Route::any('/goodslist','Goods\GoodsController@goodsList')->middleware('check.login');
 
-Route::any('/cartlist/{goods_id}','Goods\GoodsController@index');
+Route::any('/cartlist/{goods_id}','Goods\GoodsController@index')->middleware('check.login');
 
-Route::any('/cartAdd','Cart\IndexController@cartAdd');
+Route::any('/cartAdd','Cart\IndexController@cartAdd')->middleware('check.login');
 
-Route::any('/orderadd','Order\IndexController@orderAdd');
+Route::any('/orderadd','Order\IndexController@orderAdd')->middleware('check.login');
+
+Route::any('/orderlist','Order\IndexController@orderList')->middleware('check.login');
+
+Route::any('/ordershow','Order\IndexController@orderShow')->middleware('check.login');
+
+Route::any('/pay/{oid}','Pay\IndexController@order')->middleware('check.login');
+
+Route::get('/pay/alipay/test','Pay\AlipayController@test');

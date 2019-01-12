@@ -14,7 +14,7 @@ class IndexController extends Controller
     {
         //查询购物车数据
         $cart_goods = CartModel::where(['uid'=>session() -> get('uid')]) -> orderBy('id', 'desc')->get()->toArray();
-        
+
         if(empty($cart_goods)){
             die('购物车为空');
         }
@@ -37,7 +37,7 @@ class IndexController extends Controller
             'order_sn'  =>  $order_sn,
             'uid'   =>  session() -> get('uid'),
             'add_time'  =>  time(),
-            'order_amount'   =>  $order_amount
+            'order_amount'   =>  $order_amount/100
         ];
 
         $oid = OrderModel::insertGetId($data);
@@ -46,12 +46,35 @@ class IndexController extends Controller
             header('Refresh:2;url=cartshow');
             echo '生成订单失败';
             die;
+        }else{
+            echo '下单成功';
+            header('Refresh:2;url=orderlist');
+            CartModel::where(['uid'=>session()->get('uid')])->delete();
         }
 
-        echo '下单成功,订单号：'.$order_sn.' 跳转支付';
 
-        //清空购物车
-        CartModel::where(['uid'=>session()->get('uid')])->delete();
 
+    }
+
+    public function orderList()
+    {
+
+        $data = OrderModel::where(['uid' => session()->get('uid')]) -> orderBy('order_id','desc') -> first()->toArray();
+        if($data['is_pay'] == 1){
+            echo '无订单';
+            exit;
+        }
+        return view('order.orderlist',$data);
+    }
+
+    public function orderShow()
+    {
+
+        $data = OrderModel::where(['uid' => session()->get('uid')]) ->get()->toArray();
+
+        $list = [
+            'list' => $data
+        ];
+        return view('order.ordershow',$list);
     }
 }

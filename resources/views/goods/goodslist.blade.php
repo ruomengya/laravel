@@ -3,7 +3,7 @@
 
 @section('content')
 
-    <button class="btn btn-danger">{{$title}}</button>
+    <h2 align="center" style="color:red;">{{$title}}</h2>
 
     <table  class="table table-bordered">
         <tr align="center">
