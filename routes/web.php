@@ -54,7 +54,7 @@ Route::any('/orderlist','Order\IndexController@orderList')->middleware('check.lo
 
 Route::any('/ordershow','Order\IndexController@orderShow')->middleware('check.login');
 
-Route::any('/pay/{oid}','Pay\IndexController@order')->middleware('check.login');
+Route::any('/pay/{order_id}','Pay\AlipayController@pay')->middleware('check.login');
 
 Route::get('/pay/alipay/test','Pay\AlipayController@test')->middleware('check.login');
 

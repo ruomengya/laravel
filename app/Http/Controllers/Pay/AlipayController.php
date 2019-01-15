@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Pay;
 
+use App\Model\OrderModel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -19,7 +20,7 @@ class AlipayController extends Controller
     {
         $this->app_id = env('ALIPAY_APPID');
         $this->gate_way = env('ALIPAY_GATEWAY');
-        $this->notify_url = env('NOTIFY_ URL');
+        $this->notify_url = env('NOTIFY_URL');
         $this->return_url = env('ALIPAY_RETURN_URL');
     }
 
@@ -56,6 +57,63 @@ class AlipayController extends Controller
         $url = rtrim($param_str,'&');
         $url = $this->gate_way . $url;
         header("Location:".$url);
+    }
+
+
+    /**
+     * 订单支付
+     * @param $oid
+     */
+
+    public function pay($order_id)
+    {
+        //查询订单
+        $order_info = OrderModel::where(['order_id' => $order_id])->first()->toArray();
+
+        if($order_info['is_pay'] == 1){
+            echo '订单已被支付';
+            exit;
+        }
+        if($order_info['is_delete'] == 1){
+            echo '订单已被删除';
+            exit;
+        }
+
+        //业务参数
+        $bizcont = [
+            'subject'           => 'Lening-Order: '.$order_id,
+            'out_trade_no'      => $order_id,
+            'total_amount'      => $order_info['order_amount'] / 100,
+            'product_code'      => 'QUICK_WAP_WAY',
+
+        ];
+
+        //公共参数
+        $data = [
+            'app_id'   => $this->app_id,
+            'method'   => 'alipay.trade.wap.pay',
+            'format'   => 'JSON',
+            'charset'   => 'utf-8',
+            'sign_type'   => 'RSA2',
+            'timestamp'   => date('Y-m-d H:i:s'),
+            'version'   => '1.0',
+            'notify_url'   => $this->notify_url,
+            'return_url'   => $this->return_url,
+            'biz_content'   => json_encode($bizcont),
+        ];
+
+        //签名
+        $sign = $this->rsaSign($data);
+        $data['sign'] = $sign;
+        $param_str = '?';
+        foreach($data as $k=>$v){
+            $param_str .= $k.'='.urlencode($v) . '&';
+        }
+
+        $url = rtrim($param_str,'&');
+        $url = $this->gate_way . $url;
+        header("Location:".$url);
+
     }
 
 
@@ -138,14 +196,8 @@ class AlipayController extends Controller
      */
     public function aliReturn()
     {
-        echo '<pre>';print_r($_GET);echo '</pre>';
-        //验签 支付宝的公钥
-        if(!$this->verify()){
-            echo 'error';
-        }
-
-        //处理订单逻辑
-        $this->dealOrder($_GET);
+        header('Refresh:2;url=/ordershow');
+        echo "订单： ".$_GET['out_trade_no'] . ' 支付成功，正在跳转';
     }
 
     /**
