@@ -59,6 +59,6 @@ Route::any('/pay/{order_id}','Pay\AlipayController@pay')->middleware('check.logi
 Route::get('/pay/alipay/test','Pay\AlipayController@test')->middleware('check.login');
 
 //同步异步
-Route::post('pay/alipay/notify','Pay\AlipayController@aliNotify')->middleware('check.login');//异步
+Route::post('pay/alipay/notify','Pay\AlipayController@aliNotify');//异步
 
-Route::get('pay/alipay/return','Pay\AlipayController@aliReturn')->middleware('check.login'); //同步
+Route::get('pay/alipay/return','Pay\AlipayController@aliReturn');//同步
