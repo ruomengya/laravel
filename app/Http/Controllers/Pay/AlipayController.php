@@ -7,10 +7,21 @@ use App\Http\Controllers\Controller;
 
 class AlipayController extends Controller
 {
-    public $app_id = '2016091900549940';
-    public $gate_way = 'https://openapi.alipaydev.com/gateway.do';
-    public $notify_url = 'http://whw.anjingdehua.cn';
+
+    public $app_id;
+    public $gate_way;
+    public $notify_url;
+    public $return_url;
     public $rsaPrivateKeyFilePath = './key/priv.key';
+    public $aliPubKey = './key/ali_pub.key';
+
+    public function __construct()
+    {
+        $this->app_id = env('ALIPAY_APPID');
+        $this->gate_way = env('ALIPAY_GATEWAY');
+        $this->notify_url = env('ALIPAY_NOTIFY_URL');
+        $this->return_url = env('ALIPAY_RETURN_URL');
+    }
 
     public function test()
     {
@@ -32,6 +43,7 @@ class AlipayController extends Controller
             'timestamp'   => date('Y-m-d H:i:s'),
             'version'   => '1.0',
             'notify_url'   => $this->notify_url,
+            'return_url'   => $this->return_url,
             'biz_content'   => json_encode($bizcont),
         ];
 
@@ -119,6 +131,63 @@ class AlipayController extends Controller
 
 
         return $data;
+    }
+
+    /**
+     * 支付宝同步通知回调
+     */
+    public function aliReturn()
+    {
+        echo '<pre>';print_r($_GET);echo '</pre>';
+        //验签 支付宝的公钥
+        if(!$this->verify()){
+            echo 'error';
+        }
+
+        //处理订单逻辑
+        $this->dealOrder($_GET);
+    }
+
+    /**
+     * 支付宝异步通知
+     */
+    public function aliNotify()
+    {
+
+        $data = json_encode($_POST);
+        $log_str = '>>>> '.date('Y-m-d H:i:s') . $data . "<<<<\n\n";
+        //记录日志
+        file_put_contents('logs/alipay.log',$log_str,FILE_APPEND);
+        //验签
+        $res = $this->verify();
+        if($res === false){
+            echo 'error';
+            //记录日志 验签失败
+        }
+
+        //处理订单逻辑
+        $this->dealOrder($_POST);
+
+        echo 'success';
+    }
+
+
+    //验签
+    function verify() {
+        return true;
+    }
+
+    /**
+     * 处理订单逻辑 更新订单 支付状态 更新订单支付金额 支付时间
+     * @param $data
+     */
+    public function dealOrder($data)
+    {
+
+
+        //加积分
+
+        //减库存
     }
 }
 
