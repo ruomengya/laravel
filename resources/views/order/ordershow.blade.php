@@ -16,7 +16,7 @@
                 <td>{{date('Y-m-d H:i:s',$v['add_time'])}}</td>
                 <td>
                     @if($v['is_pay'] == 0)
-                        未支付
+                        <a href="/pay/{{$v['order_id']}}" class="btn btn-danger">去支付</a>
                         @else
                             已支付
                         @endif
