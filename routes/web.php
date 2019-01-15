@@ -58,6 +58,8 @@ Route::any('/pay/{order_id}','Pay\AlipayController@pay')->middleware('check.logi
 
 Route::get('/pay/alipay/test','Pay\AlipayController@test')->middleware('check.login');
 
+Route::any('/crontab','Crontab\IndexController@orderDelete');
+
 //同步异步
 Route::post('pay/alipay/notify','Pay\AlipayController@aliNotify');//异步
 
