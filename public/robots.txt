@@ -1,2 +1,42 @@
 User-agent: *
 Disallow:
+
+
+
+#-------------Start---------------
+server{
+listen 80;
+server_name whw.anjingdehua.cn;
+return 301 https://whw.anjingdehua.cn$request_uri;
+}
+
+server
+{
+listen 443;
+
+server_name whw.anjingdehua.cn;
+index  index.php;
+root  /home/wwwroot/default/cms/cms/public;
+
+include enable-php-pathinfo.conf;
+ssl on;
+ssl_certificate /etc/letsencrypt/live/whw.anjingdehua.cn/fullchain.pem;
+ssl_certificate_key /etc/letsencrypt/live/whw.anjingdehua.cn/privkey.pem;
+ssl_session_timeout 5m;
+ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+ssl_ciphers EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA256:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384;
+ssl_prefer_server_ciphers on;
+
+#匹配到所有的url请求 (包括 图片 js css php ...) 例如http://192.168.43.112/Index/index/id/10
+location / {
+#如果没有找到请求的文件
+if (!-e $request_filename){
+#rewrite ^(.*)$ /index.php?s=/$1 last;
+#重写   正则匹配   重定向后的地址
+rewrite ^(.*)$ /index.php/$1 last;
+}
+}
+access_log  /home/wwwlogs/access.log;
+}
+
+#--------End-------------
