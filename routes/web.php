@@ -15,6 +15,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+Route::middleware(['log.click'])->group(function(){
+Route::any('/test/guzzle','Test\TestController@guzzleTest');
+Route::get('/test/cookie1','Test\TestController@cookieTest1');
+Route::get('/test/cookie2','Test\TestController@cookieTest2');
+Route::get('/test/session','Test\TestController@sessionTest');
+Route::get('/test/mid1','Test\TestController@mid1')->middleware('check.uid');        //中间件测试
+Route::get('/test/check_cookie','Test\TestController@checkCookie')->middleware('check.cookie');
+});
+
 Route::any('/user','User\UserController@user');
 
 Route::any('/user/add','User\UserController@add');
@@ -67,3 +77,4 @@ Route::get('pay/alipay/return','Pay\AlipayController@aliReturn');//同步
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+

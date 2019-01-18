@@ -2,7 +2,11 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\CheckCookie;
+use App\Http\Middleware\CheckUid;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+
+use App\Http\Middleware\ClickLog;
 
 class Kernel extends HttpKernel
 {
@@ -35,6 +39,19 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        ],
+
+        'log.click' => [
+            ClickLog::class
+
+        ],
+        'check.uid' => [
+            CheckUid::class
+
+        ],
+        'check.cookie' => [
+            CheckCookie::class
+
         ],
 
         'api' => [
