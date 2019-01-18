@@ -22,6 +22,8 @@ class AlipayController extends Controller
         $this->gate_way = env('ALIPAY_GATEWAY');
         $this->notify_url = env('NOTIFY_URL');
         $this->return_url = env('ALIPAY_RETURN_URL');
+        $this->middleware('auth');
+
     }
 
     public function test()

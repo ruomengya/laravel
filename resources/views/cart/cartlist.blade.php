@@ -16,7 +16,7 @@
                 <td>{{$v['goods_name']}}</td>
                 <td>{{$v['num']}}</td>
                 <td>{{$v['price']/100*$v['num']}}</td>
-                <td>{{date('Y-m-d H:i:s ' , $v['add_time'])}}</td>
+                <td>{{$v['created_at']}}</td>
                 <td><a href="/cartdel/{{$v['goods_id']}}">删除</a></td>
             </tr>
         @endforeach

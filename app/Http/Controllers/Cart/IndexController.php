@@ -6,13 +6,18 @@ use App\Model\CartModel;
 use App\Model\GoodsModel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class IndexController extends Controller
 {
+    public function __construct()
+    {
+        $this -> middleware('auth');
+    }
     public function index(Request $request)
     {
 
-        $cart_goods = CartModel::where(['uid' => session()->get('uid')])->get()->toArray();
+        $cart_goods = CartModel::where(['uid' => Auth::id()])->get()->toArray();
         //print_r($cart_goods);exit;
         if(empty($cart_goods)){
             echo '购物车为空';
@@ -22,7 +27,7 @@ class IndexController extends Controller
             foreach( $cart_goods as $k=>$v){
                 $goods_info = GoodsModel::where(['goods_id' => $v['goods_id']])->first()->toArray();
                 $goods_info['num'] = $v['num'];
-                $goods_info['add_time'] = $v['add_time'];
+                $goods_info['created_at'] = $v['created_at'];
                 $list[] = $goods_info;
             }
         }
@@ -63,7 +68,7 @@ class IndexController extends Controller
             }else{
                 $data = [
                     'goods_num' =>$goods['goods_num'] - $num ,
-                    'add_time' => time(),
+                    'created_at' => date('Y-m-d H:i:s'),
                 ];
                 $goods_update = GoodsModel::where(['goods_id' => $goods_id])->update($data);
                 if($goods_update){
@@ -81,7 +86,7 @@ class IndexController extends Controller
                 }
                 $data1 = [
                     'num' =>$cart['num'] + $num,
-                    'add_time' => time(),
+                    'created_at' => date('Y-m-d H:i:s'),
                     'session_token' => session()->get('u_token')
                 ];
                 CartModel::where(['id' => $cart['id']])->update($data1);
@@ -93,8 +98,8 @@ class IndexController extends Controller
             $data = [
                 'goods_id' => $goods_id,
                 'num' => $num,
-                'add_time' => time(),
-                'uid' => session() -> get('uid'),
+                'created_at' => date('Y-m-d H:i:s'),
+                'uid' => Auth::id(),
                 'session_token' => session() -> get('u_token')
             ];
 
@@ -115,7 +120,7 @@ class IndexController extends Controller
 
             $data = [
                 'goods_num' =>$goods['goods_num'] - $num ,
-                'add_time' => time(),
+                'created_at' => date('Y-m-d H:i:s'),
             ];
             GoodsModel::where(['goods_id' => $goods_id])->update($data);
             return $response;
@@ -128,7 +133,7 @@ class IndexController extends Controller
 
     public function cartDel($goods_id){
         $where = [
-            'uid' =>session() -> get('uid'),
+            'uid' =>Auth::id(),
             'goods_id' => $goods_id
         ];
         $res = CartModel::where($where)->delete();

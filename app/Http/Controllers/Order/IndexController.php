@@ -7,9 +7,14 @@ use App\Model\GoodsModel;
 use App\Model\OrderModel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class IndexController extends Controller
 {
+    public function __construct()
+    {
+        $this -> middleware('auth');
+    }
     public function orderAdd()
     {
         //查询购物车数据
@@ -49,7 +54,7 @@ class IndexController extends Controller
         }else{
             echo '下单成功';
             header('Refresh:2;url=orderlist');
-            CartModel::where(['uid'=>session()->get('uid')])->delete();
+            CartModel::where(['uid'=>Auth::id()])->delete();
         }
 
 
@@ -59,7 +64,7 @@ class IndexController extends Controller
     public function orderList()
     {
 
-        $data = OrderModel::where(['uid' => session()->get('uid')]) -> orderBy('order_id','desc') -> first()->toArray();
+        $data = OrderModel::where(['uid' => Auth::id()]) -> orderBy('order_id','desc') -> first()->toArray();
         if($data['is_pay'] == 1){
             echo '无订单';
             exit;
@@ -70,7 +75,7 @@ class IndexController extends Controller
     public function orderShow()
     {
 
-        $data = OrderModel::where(['uid' => session()->get('uid')]) ->get()->toArray();
+        $data = OrderModel::where(['uid' => Auth::id()]) ->get()->toArray();
 
         $list = [
             'list' => $data
