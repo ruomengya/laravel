@@ -44,8 +44,8 @@ class WeixinController extends Controller
         $xml = simplexml_load_string($data);        //将 xml字符串 转换成对象
 
         //记录日志
-        $log_str = date('Y-m-d H:i:s') . "\n" . $data . "\n<<<<<<";
-        file_put_contents('logs/wx_event.log',$log_str,FILE_APPEND);
+        //$log_str = date('Y-m-d H:i:s') . "\n" . $data . "\n<<<<<<";
+        //file_put_contents('logs/wx_event.log',$log_str,FILE_APPEND);
 
         $event = $xml->Event;                       //事件类型
         $openid = $xml->FromUserName;               //用户openid
@@ -60,12 +60,53 @@ class WeixinController extends Controller
             }elseif($xml->MsgType=='image'){       //用户发送图片信息
                 //视业务需求是否需要下载保存图片
                 if(1){  //下载图片素材
-                    $this->dlWxImg($xml->MediaId);
+                    $file_name=$this->dlWxImg($xml->MediaId);
                     $xml_response = '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName><FromUserName><![CDATA['.$xml->ToUserName.']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['. date('Y-m-d H:i:s') .']]></Content></xml>';
                     echo $xml_response;
+
+                    //写入数据库
+                    $data = [
+                        'openid'    => $openid,
+                        'add_time'  => time(),
+                        'msg_type'  => 'image',
+                        'media_id'  => $xml->MediaId,
+                        'msg_id'    => $xml->MsgId,
+                        'pic_url'   => $xml->PicUrl,
+                        'local_file_name'   => $file_name
+                    ];
+
+                    $m_id = WeixinMedia::insertGetId($data);
+                    var_dump($m_id);
                 }
             }elseif($xml->MsgType=='voice'){        //处理语音信息
-                $this->dlVoice($xml->MediaId);
+                $file_name=$this->dlVoice($xml->MediaId);
+                $xml_response = '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName><FromUserName><![CDATA['.$xml->ToUserName.']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['. date('Y-m-d H:i:s') .']]></Content></xml>';
+                echo $xml_response;
+                //写入数据库
+                $data = [
+                    'openid'    => $openid,
+                    'add_time'  => time(),
+                    'msg_type'  => 'image',
+                    'media_id'  => $xml->MediaId,
+                    'format'    => $xml->Fatorm,
+                    'msg_id'    => $xml->MsgId,
+                    'local_file_name'   => $file_name
+                ];
+            }elseif($xml->MsgType=='video'){        //处理视频信息
+                $file_name=$this->dlVoice($xml->MediaId);
+                $xml_response = '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName><FromUserName><![CDATA['.$xml->ToUserName.']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['. date('Y-m-d H:i:s') .']]></Content></xml>';
+                echo $xml_response;
+                //写入数据库
+                $data = [
+                    'openid'    => $openid,
+                    'add_time'  => time(),
+                    'msg_type'  => 'image',
+                    'media_id'  => $xml->MediaId,
+                    'format'    => $xml->Fatorm,
+                    'msg_id'    => $xml->MsgId,
+                    'thumb_media_id：'   => $xml->ThumbMediaId,
+                    'local_file_name'   => $file_name
+                ];
             }elseif($xml->MsgType=='event'){        //判断事件类型
 
                 if($event=='subscribe'){                        //扫码关注事件
@@ -89,7 +130,7 @@ class WeixinController extends Controller
                         ];
 
                         $id = WeixinUser::insertGetId($user_data);      //保存用户信息
-                        var_dump($id);exit;
+                        //var_dump($id);exit;
                     }
                 }elseif($event=='CLICK'){               //click 菜单
                     if($xml->EventKey=='kefu01'){       // 根据 EventKey判断菜单
@@ -134,7 +175,7 @@ class WeixinController extends Controller
 
         //获取文件名
         $file_info = $response->getHeader('Content-disposition');
-
+        //var_dump($file_info);exit;
         $file_name = substr(rtrim($file_info[0],'"'),-20);
 
         $wx_image_path = 'wx/images/'.$file_name;
@@ -145,7 +186,7 @@ class WeixinController extends Controller
         }else{      //保存失败
             //echo 'NO';
         }
-
+        return $file_name;
     }
 
     /**
