@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Weixin;
 
+use App\Model\WeixinMedia;
 use App\Model\WeixinUser;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -92,6 +93,9 @@ class WeixinController extends Controller
                     'msg_id'    => $xml->MsgId,
                     'local_file_name'   => $file_name
                 ];
+
+                $m_id = WeixinMedia::insertGetId($data);
+                var_dump($m_id);
             }elseif($xml->MsgType=='video'){        //处理视频信息
                 $file_name=$this->dlVoice($xml->MediaId);
                 $xml_response = '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName><FromUserName><![CDATA['.$xml->ToUserName.']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['. date('Y-m-d H:i:s') .']]></Content></xml>';
@@ -107,6 +111,8 @@ class WeixinController extends Controller
                     'thumb_media_id：'   => $xml->ThumbMediaId,
                     'local_file_name'   => $file_name
                 ];
+                $m_id = WeixinMedia::insertGetId($data);
+                var_dump($m_id);
             }elseif($xml->MsgType=='event'){        //判断事件类型
 
                 if($event=='subscribe'){                        //扫码关注事件
