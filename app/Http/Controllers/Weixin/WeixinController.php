@@ -72,6 +72,7 @@ class WeixinController extends Controller
                     $sub_time = $xml->CreateTime;               //扫码关注时间
                     //获取用户信息
                     $user_info = $this->getUserInfo($openid);
+                    //var_dump($user_info);exit;
 
                     //保存用户信息
                     $u = WeixinUser::where(['openid'=>$openid])->first();
@@ -88,7 +89,7 @@ class WeixinController extends Controller
                         ];
 
                         $id = WeixinUser::insertGetId($user_data);      //保存用户信息
-                        //var_dump($id);
+                        var_dump($id);exit;
                     }
                 }elseif($event=='CLICK'){               //click 菜单
                     if($xml->EventKey=='kefu01'){       // 根据 EventKey判断菜单
@@ -99,8 +100,8 @@ class WeixinController extends Controller
             }
 
         }
-        $log_str = date('Y-m-d H:i:s') . "\n" . $data . "\n<<<<<<<";
-        file_put_contents('logs_event.log',$log_str,FILE_APPEND);
+        //$log_str = date('Y-m-d H:i:s') . "\n" . $data . "\n<<<<<<<";
+        //file_put_contents('logs_event.log',$log_str,FILE_APPEND);
 
     }
 
@@ -220,7 +221,7 @@ class WeixinController extends Controller
         //$openid = 'oLreB1jAnJFzV_8AGWUZlfuaoQto';
         $access_token = $this->getWXAccessToken();      //请求每一个接口必须有 access_token
         $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$access_token.'&openid='.$openid.'&lang=zh_CN';
-
+        //echo $url;exit;
         $data = json_decode(file_get_contents($url),true);
         //echo '<pre>';print_r($data);echo '</pre>';
         return $data;
