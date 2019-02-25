@@ -86,7 +86,7 @@ class WxmaterialController extends Controller
         $grid->id('Id');
         $grid->name('Name');
         $grid->url('Url')->display(function($img){
-            return '<img src="https://anjingdehua.cn/'.$img.'"width=150 height=150>';
+            return '<img src="https://whw.anjingdehua.cn/'.$img.'"width=150 height=150>';
         });;
         $grid->ctime('Ctime');
 
