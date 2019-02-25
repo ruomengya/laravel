@@ -89,7 +89,7 @@ class WeixinModiaController extends Controller
         $grid->format('Format');
         $grid->msg_id('Msg id');
         $grid->local_file_name('Local file name')->display(function($img){
-            return '<img src="http://cms.com/wx/images/'.$img.'"width=150 height=150>';
+            return '<img src="https://whw.anjingdehua.cn/wx/images/'.$img.'"width=150 height=150>';
         });
         $grid->local_file_path('Local file path');
 
