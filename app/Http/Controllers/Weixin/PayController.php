@@ -18,7 +18,7 @@ class PayController extends Controller
     {
 
         //
-        $total_fee = 1000000;         //用户要支付的总金额
+        $total_fee = 1;         //用户要支付的总金额
         $order_id = OrderModel::generateOrderSN();
 
         $order_info = [
