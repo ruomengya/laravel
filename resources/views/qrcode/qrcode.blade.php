@@ -4,7 +4,7 @@
 @section('content')
     <div id="qrcode"></div>
     @parent
-    <script src="{{URL::asset('/js/qrcodejs/qrcode.min.js')}}"></script>
+    <script src="{{URL::asset('/js/qrcode.min.js')}}"></script>
 
     <script>
         (function() {
