@@ -187,7 +187,7 @@ class PayController extends Controller
                     'is_pay'=> 1,
                     'plat'  =>  2
                 ];
-                OrderModel::where(['order_sn' => $xml->out_trade_no])->save($data);
+                OrderModel::where(['order_sn' => $xml->out_trade_no])->update($data);
             }else{
                 //TODO 验签失败
                 echo '验签失败，IP: '.$_SERVER['REMOTE_ADDR'];
