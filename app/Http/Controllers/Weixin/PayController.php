@@ -188,6 +188,8 @@ class PayController extends Controller
                     'plat'  =>  2
                 ];
                 OrderModel::where(['order_sn' => $xml->out_trade_no])->update($data);
+
+
             }else{
                 //TODO 验签失败
                 echo '验签失败，IP: '.$_SERVER['REMOTE_ADDR'];
@@ -200,4 +202,26 @@ class PayController extends Controller
         echo $response;
 
     }
+
+    public function WxSuccess(Request $request)
+    {
+        $order_id = $request->input('order_id');
+        $where = [
+            'order_id'  =>  $order_id,
+        ];
+        $order_info = OrderModel::where($where)->first();
+        if($order_info['is_pay']==1){
+            $response = [
+                'error' => 0,
+                'msg'   => '支付成功',
+            ];
+        }else{
+            $response = [
+                'error' => 1,
+                'msg'   => '未支付',
+            ];
+        }
+        return $response;
+    }
+
 }
