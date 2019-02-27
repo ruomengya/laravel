@@ -16,7 +16,7 @@
 
         </tbody>
     </table>
-    <a href="/pay/{{$order_id}}" id="submit_order" class="btn btn-info btn-block "> 确认支付 </a>
-
+    <a href="/pay/{{$order_id}}" id="submit_order" class="btn btn-info btn-block "> 支付宝支付 </a>
+    <a href="/weixin/pay/test/{{$order_id}}" id="submit_order" class="btn btn-success btn-block "> 微信支付 </a>
 
 @endsection

@@ -18,8 +18,7 @@ class IndexController extends Controller
     public function orderAdd()
     {
         //查询购物车数据
-        $cart_goods = CartModel::where(['uid'=>session() -> get('uid')]) -> orderBy('id', 'desc')->get()->toArray();
-
+        $cart_goods = CartModel::where(['uid'=>Auth::id()]) -> orderBy('id', 'desc')->get()->toArray();
         if(empty($cart_goods)){
             die('购物车为空');
         }
@@ -40,7 +39,7 @@ class IndexController extends Controller
 
         $data = [
             'order_sn'  =>  $order_sn,
-            'uid'   =>  session() -> get('uid'),
+            'uid'   =>  Auth::id(),
             'add_time'  =>  time(),
             'order_amount'   =>  $order_amount/100
         ];

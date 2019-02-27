@@ -545,5 +545,7 @@ class WeixinController extends Controller
         return $arr;
     }
 
-
+    /**
+     * 生成二维码
+     */
 }

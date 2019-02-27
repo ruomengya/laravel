@@ -14,12 +14,12 @@ class PayController extends Controller
     public $weixin_unifiedorder_url = 'https://api.mch.weixin.qq.com/pay/unifiedorder';
     public $weixin_notify_url = 'https://whw.anjingdehua.cn/weixin/pay/notice';     //支付通知回调
 
-    public function test()
+    public function test($order_id)
     {
 
         //
         $total_fee = 1;         //用户要支付的总金额
-        $order_id = OrderModel::generateOrderSN();
+        //$order_id = OrderModel::generateOrderSN();
 
         $order_info = [
             'appid'         =>  env('WEIXIN_APPID_0'),      //微信支付绑定的服务号的APPID
@@ -43,6 +43,11 @@ class PayController extends Controller
         $rs = $this->postXmlCurl($xml, $this->weixin_unifiedorder_url, $useCert = false, $second = 30);
 
         $data =  simplexml_load_string($rs);
+        $info =[
+            'code_url' => $data->code_url,
+            'order_id' => $order_id
+        ];
+        return view('qrcode.qrcode',$info);
 //        //var_dump($data);echo '<hr>';
 //        echo 'return_code: '.$data->return_code;echo '<br>';
 //		echo 'return_msg: '.$data->return_msg;echo '<br>';
@@ -175,6 +180,11 @@ class PayController extends Controller
             if($sign){       //签名验证成功
                 //TODO 逻辑处理  订单状态更新
 
+                $data = [
+                    'pay_time' => time(),
+                    'is_pay'=> 1
+                ];
+                OrderModel::where(['order_id' => $xml->out_trade_no])->save($data);
             }else{
                 //TODO 验签失败
                 echo '验签失败，IP: '.$_SERVER['REMOTE_ADDR'];
