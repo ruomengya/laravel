@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 class WxuserController extends Controller
 {
     public function Login(){
-        $myurl = 'http://mall.77sc.com.cn/weixin.php?r1=https://whw.anjingdehua.cn/login2';
+        $myurl = 'http://mall.77sc.com.cn/weixin.php?r1=https://whw.anjingdehua.cn/wxlogin2';
         $url = [
           'data'  =>'https://open.weixin.qq.com/connect/qrconnect?appid=wxe24f70961302b5a5&redirect_uri='.urlencode($myurl).'&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect'
         ];
