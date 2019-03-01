@@ -4,6 +4,8 @@
     <div class="container">
         <h2>JSSDK</h2>
         <button id="btn1">选择照片</button>
+        <button id="btn3">分享到QQ</button>
+        <button id="btn3">扫一扫</button>
     </div>
 @endsection
 @section('footer')
@@ -20,6 +22,7 @@
             jsApiList: ['chooseImage','uploadImage','getLocalImgData','startRecord'] // 必填，需要使用的JS接口列表
         });
         wx.ready(function() {
+            //调用相机相册
             $('#btn1').click(function(){
                 wx.chooseImage({
                     count: 1, // 默认9
@@ -31,6 +34,33 @@
                 });
             })
 
+            //分享qq
+            $('#btn2').click(function(){
+                wx.onMenuShareQQ({
+                    title: '测试', // 分享标题
+                    desc: '分享QQ', // 分享描述
+                    link: 'https://baidu.com', // 分享链接
+                    imgUrl: 'https://whw.anjingdehua.cn/form_test/ehrhJSWNWnDMPFS.jpg', // 分享图标
+                    success: function () {
+                                    // 用户确认分享后执行的回调函数
+                    },
+                    cancel: function () {
+                                    // 用户取消分享后执行的回调函数
+                    }
+                });
+
+            })
+
+            //扫一扫
+            $('#btn3').click(function(){
+                wx.scanQRCode({
+                    needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+                    scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+                    success: function (res) {
+                        var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+                    }
+                });
+            })
         })
     </script>
 @endsection
