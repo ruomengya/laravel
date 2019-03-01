@@ -571,9 +571,7 @@ class WeixinController extends Controller
             'noncestr' => str_random(10),
             'timestamp' => $timestamp
         ];
-        print_r($data);
         $str = 'jsapi_ticket='.$ticket.'&noncestr='.$data['noncestr'].'&timestamp='.$data['timestamp'].'&url='.$current_url;
-        echo $str;
         $signature =sha1($str);
         $data['sign'] = $signature;
         $info = [
