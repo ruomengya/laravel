@@ -553,22 +553,27 @@ class WeixinController extends Controller
     {
 
         $access_token = $this -> getWXAccessToken();
-        $ticket_url ='https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='.$access_token.'&type=jsapi';
-        $ticket_info = file_get_contents($ticket_url);
-        $ticket_arr = json_decode($ticket_info , true);
-        if(isset($ticket_arr['ticket'])){
-            $ticket = $ticket_arr['ticket'];
-            Redis::set($this->redis_weixin_jsapi_ticket,$ticket);
-            Redis::setTimeout($this->redis_weixin_jsapi_ticket,3600);       //设置过期时间 3600s
+        $ticket = Redis::get($this->redis_weixin_jsapi_ticket);
+        if(!$ticket){
+            $ticket_url ='https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='.$access_token.'&type=jsapi';
+            $ticket_info = file_get_contents($ticket_url);
+            $ticket_arr = json_decode($ticket_info , true);
+            if(isset($ticket_arr['ticket'])){
+                $ticket = $ticket_arr['ticket'];
+                Redis::set($this->redis_weixin_jsapi_ticket,$ticket);
+                Redis::setTimeout($this->redis_weixin_jsapi_ticket,3600);       //设置过期时间 3600s
+            }
         }
         $current_url = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];     //当前调用 jsapi的 url
-
+        $timestamp=time();
         $data = [
-            'appid' => env('WEIXIN_APPID_0'),        //APPID
+            'appid' => env('WEIXIN_APPID'),        //APPID
             'noncestr' => str_random(10),
-            'timestamp' => time()
+            'timestamp' => $timestamp
         ];
+        print_r($data);
         $str = 'jsapi_ticket='.$ticket.'&noncestr='.$data['noncestr'].'&timestamp='.$data['timestamp'].'&url='.$current_url;
+        echo $str;
         $signature =sha1($str);
         $data['sign'] = $signature;
         $info = [
