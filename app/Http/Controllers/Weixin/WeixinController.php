@@ -17,6 +17,7 @@ class WeixinController extends Controller
     //
 
     protected $redis_weixin_access_token = 'str:weixin_access_token';     //微信 access_token
+    protected $redis_weixin_jsapi_ticket = 'str:weixin_jsapi_ticket';     //微信 jsApi
 
     public function test()
     {
@@ -546,6 +547,33 @@ class WeixinController extends Controller
     }
 
     /**
-     * 生成二维码
+     * 计算JSSDK sign
      */
+    public function wxJsConfigSign()
+    {
+
+        $access_token = $this -> getWXAccessToken();
+        $ticket_url ='https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='.$access_token.'&type=jsapi';
+        $ticket_info = file_get_contents($ticket_url);
+        $ticket_arr = json_decode($ticket_info , true);
+        if(isset($ticket_arr['ticket'])){
+            $ticket = $ticket_arr['ticket'];
+            Redis::set($this->redis_weixin_jsapi_ticket,$ticket);
+            Redis::setTimeout($this->redis_weixin_jsapi_ticket,3600);       //设置过期时间 3600s
+        }
+        $current_url = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];     //当前调用 jsapi的 url
+
+        $data = [
+            'appid' => env('WEIXIN_APPID_0'),        //APPID
+            'noncestr' => str_random(10),
+            'timestamp' => time()
+        ];
+        $str = 'jsapi_ticket='.$ticket.'&noncestr='.$data['noncestr'].'&timestamp='.$data['timestamp'].'&url='.$current_url;
+        $signature =sha1($str);
+        $data['sign'] = $signature;
+        $info = [
+            'jsconfig' => $data
+        ];
+        return view('weixin.jssdk',$info);
+    }
 }

@@ -117,3 +117,5 @@ Route::get('/weixin/pay/wxsuccess','Weixin\PayController@WxSuccess');   //微信
 Route::any('/wxlogin','Weixin\WxuserController@Login');   //微信扫码登录
 
 Route::any('/wxlogin2','Weixin\WxuserController@Login2');   //微信扫码登录
+
+Route::get('/weixin/jssdk/test','Weixin\WeixinController@wxJsConfigSign');       // 测试
