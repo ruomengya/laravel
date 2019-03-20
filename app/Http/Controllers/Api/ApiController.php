@@ -23,7 +23,7 @@ class ApiController extends Controller
         if($name){
             $response = [
                 'error' => '0',
-                'msg'   => $name
+                'msg'   => '收到的数据是'.$name
             ];
         }else{
             $response = [
