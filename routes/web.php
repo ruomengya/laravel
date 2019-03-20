@@ -83,10 +83,10 @@ Route::get('/home', 'HomeController@index')->name('home');
 //微信
 Route::get('/weixin/refresh_token','Weixin\WeixinController@refreshToken');     //刷新token
 Route::get('/weixin/test/token','Weixin\WeixinController@test');
-Route::get('/weixin/valid','Weixin\WeixinController@validToken');
+//Route::get('/weixin/valid','Weixin\WeixinController@validToken');
 Route::get('/weixin/valid1','Weixin\WeixinController@validToken1');
 Route::post('/weixin/valid1','Weixin\WeixinController@wxEvent');        //接收微信服务器事件推送
-Route::post('/weixin/valid','Weixin\WeixinController@validToken');
+//Route::post('/weixin/valid','Weixin\WeixinController@validToken');
 Route::get('/weixin/create_menu','Weixin\WeixinController@createMenu');     //创建菜单.
 
 
@@ -119,3 +119,7 @@ Route::any('/wxlogin','Weixin\WxuserController@Login');   //微信扫码登录
 Route::any('/wxlogin2','Weixin\WxuserController@Login2');   //微信扫码登录
 
 Route::get('/weixin/jssdk/test','Weixin\WeixinController@wxJsConfigSign');       // 测试
+
+Route::any('/api/test','Api\ApiController@test1');       // 测试
+
+Route::get('/rsa/test','Index\IndexController@test');   //微信扫码登录
