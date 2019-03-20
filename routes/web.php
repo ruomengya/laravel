@@ -120,6 +120,6 @@ Route::any('/wxlogin2','Weixin\WxuserController@Login2');   //微信扫码登录
 
 Route::get('/weixin/jssdk/test','Weixin\WeixinController@wxJsConfigSign');       // 测试
 
-Route::any('/api/test','Api\ApiController@test1');       // 测试
+Route::post('/api/test','Api\ApiController@test1');       // 测试
 
 Route::get('/rsa/test','Index\IndexController@test');   //微信扫码登录
