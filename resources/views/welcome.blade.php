@@ -71,7 +71,7 @@
 
                         <a href="{{ url('/home') }}">Home</a>
                     @else
-                        <a href="http://passport.cms.com/login?url={{$url}}">Login</a>
+                        <a href="http://whwpp.anjingdehua.cn/login?url={{$url}}">Login</a>
                         <a href="{{ url('http://passport.cms.com/login') }}">Register</a>
                     @endif
                 </div>
