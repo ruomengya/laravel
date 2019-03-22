@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::any('/' , 'Index\IndexController@index')->middleware('check.login');
 
 
 Route::middleware(['log.click'])->group(function(){
@@ -39,7 +37,7 @@ Route::any('/user/list','User\UserController@userList');
 
 //Route::any('/login','User\UserController@login');
 
-Route::any('/center','User\UserController@center');
+Route::any('/center','User\UserController@center')->middleware('check.login');
 
 Route::get('/mvc/bst','Mvc\MvcController@bst');
 

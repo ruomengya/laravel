@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Redis;
 
 class CheckLogin
 {
@@ -15,10 +16,17 @@ class CheckLogin
      */
     public function handle($request, Closure $next)
     {
-        if(!$request->session()->get('u_token')){
-            header('Refresh:2;url=/login');
-            echo '请先登录';
-            exit;
+        if(isset($_COOKIE['uid']) && isset($_COOKIE['token'])){
+            //验证token
+            $key = 'str:u:token:web:'.$_COOKIE['uid'];
+            $token = Redis::get($key);
+            if($_COOKIE['token'] == $token){
+                $request->attributes->add(['is_login' => 1]);
+            }else{
+                $request->attributes->add(['is_login' => 0]);
+            }
+        }else{
+            $request->attributes->add(['is_login' => 0]);
         }
 
 

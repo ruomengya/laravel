@@ -66,16 +66,16 @@
     </head>
     <body>
         <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
                 <div class="top-right links">
-                    @auth
+                    @if($is_login == 1)
+
                         <a href="{{ url('/home') }}">Home</a>
                     @else
-                        <a href="{{ route('login') }}">Login</a>
-                        <a href="{{ route('register') }}">Register</a>
-                    @endauth
+                        <a href="http://passport.cms.com/login?url={{$url}}">Login</a>
+                        <a href="{{ url('http://passport.cms.com/login') }}">Register</a>
+                    @endif
                 </div>
-            @endif
+
 
             <div class="content">
                 <div class="title m-b-md">

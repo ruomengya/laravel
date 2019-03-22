@@ -43,4 +43,15 @@ class IndexController extends Controller
         var_dump($rs);die;
         curl_close($ch);
     }
+
+    public function index(Request $request){
+        $is_login = $request->get('is_login');
+        $url = 'http://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+        $data =[
+            'url' => urlencode($url),
+            'is_login' => $is_login
+        ];
+
+        return view('welcome' , $data);
+    }
 }
