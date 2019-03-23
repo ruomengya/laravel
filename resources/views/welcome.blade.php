@@ -70,6 +70,8 @@
                     @if($is_login == 1)
 
                         <a href="{{ url('/home') }}">Home</a>
+
+                        <a href="{{ url('http://whwpp.anjingdehua.cn/quit') }}">Quit</a>
                     @else
                         <a href="http://whwpp.anjingdehua.cn/login?url={{$url}}">Login</a>
                         <a href="{{ url('http://passport.cms.com/login') }}">Register</a>
