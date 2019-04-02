@@ -35,6 +35,7 @@ Route::any('/user/list','User\UserController@userList');
 
 Route::any('/user/timeout','User\UserController@timeOut');
 
+Route::any('/islogin','User\UserController@isLogin');
 //Route::any('/register','User\UserController@register');
 
 //Route::any('/login','User\UserController@login');

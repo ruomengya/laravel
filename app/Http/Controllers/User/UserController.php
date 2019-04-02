@@ -200,5 +200,12 @@ class UserController extends Controller
             ];
         }
     }
+
+    public function isLogin(Request $request){
+        $a = $request->get('is_login');
+        return [
+            'is_login' => $a
+        ];
+    }
 }
 

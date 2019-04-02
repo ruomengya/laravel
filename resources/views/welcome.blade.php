@@ -97,8 +97,23 @@
 </html>
 
 <script>
+    setInterval(function(){
+        $.ajax({
+            url:'/islogin',
+            type:"GET",
+            data_type:'json',
+            success:function(data){
+                if(data.error == 0){
+                    alert('强制下线');
+                    location.href='/'
+                }
+
+            }
+        })
+    },2000);
+    setTimeout(timeOut,1000*10);
     function timeOut(){
-        setTimeout(timeOut,1000*10);
+
         $.ajax({
             url:'/user/timeout',
             type:'GET',
