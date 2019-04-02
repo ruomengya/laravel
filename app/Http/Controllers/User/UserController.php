@@ -139,9 +139,9 @@ class UserController extends Controller
     {
         $username = $_COOKIE['username'];
         if ($username == 'test1') {
-            UserModel::where(['test1' => 'name'])->update(['is_login' => 1]);
-            UserModel::where(['test2' => 'name'])->update(['is_login' => 0]);
-            UserModel::where(['test3' => 'name'])->update(['is_login' => 0]);
+            UserModel::where(['name' => 'test1'])->update(['is_login' => '在线']);
+            UserModel::where(['name' => 'test2'])->update(['is_login' => '下线']);
+            UserModel::where(['name' => 'test3'])->update(['is_login' => '下线']);
             $res = UserModel::all();
             $data = [
                 'aa' => $res
@@ -149,9 +149,9 @@ class UserController extends Controller
             // print_r($list);
             return view('userlist', $data);
         }else if ($username == 'test2') {
-            UserModel::where(['test1' => 'name'])->update(['is_login' => 0]);
-            UserModel::where(['test2' => 'name'])->update(['is_login' => 1]);
-            UserModel::where(['test3' => 'name'])->update(['is_login' => 0]);
+            UserModel::where(['name' => 'test1'])->update(['is_login' => '下线']);
+            UserModel::where(['name' => 'test2'])->update(['is_login' => '在线']);
+            UserModel::where(['name' => 'test3'])->update(['is_login' => '下线']);
             $res = UserModel::all();
             $data = [
                 'aa' => $res
@@ -159,9 +159,9 @@ class UserController extends Controller
             // print_r($list);
             return view('userlist', $data);
         }else if ($username == 'test3') {
-            UserModel::where(['test1' => 'name'])->update(['is_login' => 0]);
-            UserModel::where(['test2' => 'name'])->update(['is_login' => 0]);
-            UserModel::where(['test3' => 'name'])->update(['is_login' => 1]);
+            UserModel::where(['name' => 'test1'])->update(['is_login' => '下线']);
+            UserModel::where(['name' => 'test2'])->update(['is_login' => '下线']);
+            UserModel::where(['name' => 'test3'])->update(['is_login' => '在线']);
             $res = UserModel::all();
             $data = [
                 'aa' => $res
@@ -169,9 +169,9 @@ class UserController extends Controller
             // print_r($list);
             return view('userlist', $data);
         }else{
-            UserModel::where(['test1' => 'name'])->update(['is_login' => 0]);
-            UserModel::where(['test2' => 'name'])->update(['is_login' => 0]);
-            UserModel::where(['test3' => 'name'])->update(['is_login' => 0]);
+            UserModel::where(['name' => 'test1'])->update(['is_login' => '下线']);
+            UserModel::where(['name' => 'test2'])->update(['is_login' => '下线']);
+            UserModel::where(['name' => 'test3'])->update(['is_login' => '下线']);
             $res = UserModel::all();
             $data = [
                 'aa' => $res

@@ -13,6 +13,7 @@
             <td>{{$v -> name}}</td>
             <td>{{$v -> age}}</td>
             <td>{{$v -> email}}</td>
+            <td>{{$v -> is_login}}</td>
 
         </tr>
         @endforeach
