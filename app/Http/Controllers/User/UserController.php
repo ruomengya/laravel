@@ -188,7 +188,7 @@ class UserController extends Controller
         Redis::del('token:'.$_COOKIE['uid']);
         setcookie('uid' , null , time()-1 , '/' , 'anjingdehua.cn' , false , true);
         setcookie('token' , null , time()-1 , '/' , 'anjingdehua.cn' , false , true);
-        if($_COOKIE['whw_token'] == null){
+        if($_COOKIE['token'] == null){
             return [
                 'error' => 0,
                 'msg'   => '长时间未操作，强制下线'
