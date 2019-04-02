@@ -121,3 +121,5 @@ Route::get('/weixin/jssdk/test','Weixin\WeixinController@wxJsConfigSign');      
 Route::post('/api/test','Api\ApiController@test1');       // 测试
 
 Route::get('/rsa/test','Index\IndexController@test');   //微信扫码登录
+
+Route::any('/crontab/test1','Crontab\CrontabController@test1');   //测试计划任务
