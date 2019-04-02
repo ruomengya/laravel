@@ -185,9 +185,9 @@ class UserController extends Controller
     }
 
     public function timeOut(){
-        Redis::del('token:'.$_COOKIE['whw_uid']);
-        setcookie('whw_uid' , null , time()-1 , '/' , 'anjingdehua.cn' , false , true);
-        setcookie('whw_token' , null , time()-1 , '/' , 'anjingdehua.cn' , false , true);
+        Redis::del('token:'.$_COOKIE['uid']);
+        setcookie('uid' , null , time()-1 , '/' , 'anjingdehua.cn' , false , true);
+        setcookie('token' , null , time()-1 , '/' , 'anjingdehua.cn' , false , true);
         if($_COOKIE['whw_token'] == null){
             return [
                 'error' => 0,
