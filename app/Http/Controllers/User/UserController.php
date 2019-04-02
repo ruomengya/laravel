@@ -196,7 +196,7 @@ class UserController extends Controller
         }else{
             return [
                 'error' => 0,
-                'msg'   => '失败'
+                'msg'   => '长时间未操作，强制下线'
             ];
         }
     }
