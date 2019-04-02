@@ -6,6 +6,7 @@ use App\Model\UserModel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 
 class UserController extends Controller
 {
@@ -181,6 +182,23 @@ class UserController extends Controller
         }
 
 
+    }
+
+    public function timeOut(){
+        Redis::del('token:'.$_COOKIE['whw_uid']);
+        setcookie('whw_uid' , null , time()-1 , '/' , 'anjingdehua.cn' , false , true);
+        setcookie('whw_token' , null , time()-1 , '/' , 'anjingdehua.cn' , false , true);
+        if($_COOKIE['whw_token'] == null){
+            return [
+                'error' => 0,
+                'msg'   => '长时间未操作，强制下线'
+            ];
+        }else{
+            return [
+                'error' => 0,
+                'msg'   => '失败'
+            ];
+        }
     }
 }
 

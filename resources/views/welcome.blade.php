@@ -95,3 +95,24 @@
         </div>
     </body>
 </html>
+
+<script>
+    function timeOut(){
+        setTimeout(timeOut,1000*10);
+        $.ajax({
+            url:'/user/timeout',
+            type:'GET',
+            data_type:'json',
+            success:function(data){
+                if(data.error == 0){
+                    alert(data.msg);
+                    location.href='/'
+                }else{
+                    timeOut();
+                }
+
+            }
+        })
+    }
+
+</script>
